@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Hydrus Downloader",
+  "version": "0.1",
+  "description": "Downloads images from certain websites.",
+
+  "permissions": [],
+  "host_permissions": ["*://www.pixiv.net/*"],
+  "browser_specific_settings": {
+    "gecko": { "id": "HydrusDownloader@pixiv.net" }
+  },
+
+  "content_scripts": []
+}
