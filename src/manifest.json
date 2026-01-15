@@ -10,5 +10,18 @@
     "gecko": { "id": "HydrusDownloader@pixiv.net" }
   },
 
-  "content_scripts": []
+  "content_scripts": [
+    {
+      "matches": ["*://www.pixiv.net/*"],
+      "css": ["css/layout.css", "css/style.css"]
+    },
+    {
+      "matches": ["*://www.pixiv.net/*"],
+      "js": [
+        "js/pixiv/utils.ts",
+        "js/pixiv/html.ts",
+        "js/init.ts"
+      ]
+    }
+  ]
 }
