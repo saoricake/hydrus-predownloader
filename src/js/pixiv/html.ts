@@ -4,8 +4,8 @@ const getDialog = (() => {
     const form = document.createElement("form")
 
     dialog.setAttribute("closedby", "any")
-    dialog.setAttribute("id", "downloader")
-    form.setAttribute("name", "downloader-form")
+    dialog.id = "downloader"
+    form.name = "downloader-form"
 
     dialog.appendChild(form)
 
