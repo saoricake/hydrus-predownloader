@@ -1,0 +1,35 @@
+/* box model */
+
+dialog#downloader {
+  height: 80%;
+}
+
+dialog#downloader form {
+  height: 100%;
+}
+
+fieldset#imageList {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* grid */
+fieldset#imageList {
+  display: grid;
+  grid-template-columns: repeat(3, max-content);
+  gap: 4px;
+  grid-auto-rows: max-content;
+
+  overflow-y: scroll;
+}
+
+fieldset#imageList label {
+  display: grid;
+  place-items: start;
+
+  input { z-index: 1; }
+  input, img {
+    grid-column-start: 1;
+    grid-row-start: 1;
+  }
+}
