@@ -17,6 +17,7 @@ const getDialog = (() => {
 
     // etc.
 
+    document.body.appendChild(dialog)
     return dialog
   }
 

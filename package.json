@@ -1,19 +1,12 @@
 {
   "name": "hydrus-downloader",
   "packageManager": "yarn@4.6.0",
-  "webExt": {
-    "sourceDir": "dist",
-    "run": {
-      "devtools": true,
-      "startUrl": ["https://www.pixiv.net"]
-    }
-  },
   "scripts": {
-    "start": "web-ext run"
+    "build": "powershell ./build.ps1",
+    "start": "yarn build && web-ext run -f=deved -p=default"
   },
   "devDependencies": {
     "@types/firefox-webext-browser": "^143",
-    "typescript": "^5.9",
-    "web-ext": "^9.2"
+    "typescript": "^5.9"
   }
 }

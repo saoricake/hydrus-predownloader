@@ -18,9 +18,9 @@
     {
       "matches": ["*://www.pixiv.net/*"],
       "js": [
-        "js/pixiv/utils.ts",
-        "js/pixiv/html.ts",
-        "js/init.ts"
+        "js/pixiv/utils.js",
+        "js/pixiv/html.js",
+        "js/init.js"
       ]
     }
   ]
