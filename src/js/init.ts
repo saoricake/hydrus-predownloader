@@ -10,6 +10,7 @@ document.addEventListener("keydown", async (ev) => {
   if (dialog.open) return
 
   if (latest !== location.pathname) {
+    await updateHiddenInputs()
     const imgURLs = await getImgURLs()
     updateImageList(imgURLs)
     latest = location.pathname

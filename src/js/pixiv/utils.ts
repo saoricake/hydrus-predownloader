@@ -1,5 +1,10 @@
 const isIllustPage = () => /\/artworks\/\d+$/.test(location.pathname)
 
+const getImgId = () => {
+  const match = location.pathname.match(/\/artworks\/(\d+)$/)!
+  return match[match.length - 1]
+}
+
 const getImgURLs = (() => {
   type ImgURLs = {
     url: string
@@ -16,11 +21,6 @@ const getImgURLs = (() => {
     height: number
     width: number
   }[]
-
-  const getImgId = () => {
-    const match = location.pathname.match(/\/artworks\/(\d+)$/)!
-    return match[match.length - 1]
-  }
 
   return async () => {
     const imgId = getImgId()

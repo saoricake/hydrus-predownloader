@@ -11,16 +11,27 @@ dialog#downloader form {
 fieldset#imageList {
   height: 100%;
   box-sizing: border-box;
+  overflow-y: scroll;
 }
 
 /* grid */
+dialog#downloader form {
+  display: grid;
+  grid-template-rows: max-content 1fr max-content;
+  grid-template-columns: repeat(2, 1fr);
+
+  > * { grid-row: 1 / -1; }
+  section {
+    display: grid;
+    grid-template-rows: subgrid;
+  }
+}
+
 fieldset#imageList {
   display: grid;
   grid-template-columns: repeat(3, max-content);
   gap: 4px;
   grid-auto-rows: max-content;
-
-  overflow-y: scroll;
 }
 
 fieldset#imageList label {
