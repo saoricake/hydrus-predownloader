@@ -1,11 +1,16 @@
 /* box model */
-
 dialog#downloader {
   height: 80%;
 }
 
 dialog#downloader form {
   height: 100%;
+}
+
+form[name="downloader-form"] input[type="text"] {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 fieldset#imageList {
@@ -19,12 +24,21 @@ dialog#downloader form {
   display: grid;
   grid-template-rows: max-content 1fr max-content;
   grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
 
   > * { grid-row: 1 / -1; }
   section {
     display: grid;
     grid-template-rows: subgrid;
   }
+}
+
+form[name="downloader-form"] section > label:first-of-type {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+
+  input[type="text"] { grid-column: 1 / -1; }
 }
 
 fieldset#imageList {

@@ -3,6 +3,11 @@ dialog#downloader {
   background-color: #F0F0F0;
 }
 
+form[name="downloader-form"] button {
+  background-color: revert;
+  border: revert;
+}
+
 fieldset#imageList {
   padding: 4px;
   border: 1px solid #8F8F9D;

@@ -11,6 +11,7 @@ document.addEventListener("keydown", async (ev) => {
 
   if (latest !== location.pathname) {
     await updateHiddenInputs()
+    initArtistNameField()
     const imgURLs = await getImgURLs()
     updateImageList(imgURLs)
     latest = location.pathname

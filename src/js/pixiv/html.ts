@@ -12,6 +12,56 @@ const getDialog = (() => {
     return { dialog, form }
   }
 
+  const createArtistNameField = (() => {
+    const getArtistId = () => getInput("artist-id").value
+
+    const createHandlers = (input: HTMLInputElement) => ({
+      save: () => {
+        if (!input.value) return
+        input.value = input.value.replaceAll(" ", "_")
+        localStorage.setItem(getArtistId(), input.value)
+      },
+      load: () => {
+        const saved = localStorage.getItem(getArtistId())
+        if (!saved) return
+        input.value = saved
+      },
+      clear: () => localStorage.removeItem(getArtistId())
+    })
+
+    const createButton = (
+      label: string,
+      onClick: NonNullable<HTMLButtonElement["onclick"]>
+    ) => {
+      const button = document.createElement("button")
+      button.appendChild(document.createTextNode(label))
+      button.type = "button"
+      button.addEventListener("click", onClick)
+      return button
+    }
+
+    return () => {
+      const label = document.createElement("label")
+      const input = document.createElement("input")
+      const { save, load, clear } = createHandlers(input)
+      const saveButton = createButton("save", save)
+      const loadButton = createButton("load", load)
+      const clearButton = createButton("clear", clear)
+
+      input.name = "artist-name"
+      input.placeholder = "artist's name"
+      input.type = "text"
+      input.required = true
+
+      label.appendChild(input)
+      label.appendChild(saveButton)
+      label.appendChild(loadButton)
+      label.appendChild(clearButton)
+
+      return label
+    }
+  })()
+
   const createHiddenInputs = () => {
     const artistIdInput = document.createElement("input")
     const illustDateInput = document.createElement("input")
@@ -40,6 +90,7 @@ const getDialog = (() => {
     form.appendChild(createImageList())
     form.appendChild(artistIdInput)
     form.appendChild(illustDateInput)
+    section.appendChild(createArtistNameField())
 
     document.body.appendChild(dialog)
     return dialog
@@ -84,6 +135,12 @@ const updateHiddenInputs = (() => {
     illustDateInput.value = createDate.split("T")[0]
   }
 })()
+
+const initArtistNameField = () => {
+  const saved = localStorage.getItem(getInput("artist-id").value)
+  if (!saved) return
+  getInput("artist-name").value = saved
+}
 
 const updateImageList = (() => {
   type ImgURLs = {

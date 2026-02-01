@@ -5,6 +5,11 @@ const getImgId = () => {
   return match[match.length - 1]
 }
 
+const getInput = (inputName: string) => {
+  const form = document.forms.namedItem("downloader-form")!
+  return form.elements.namedItem(inputName) as HTMLInputElement
+}
+
 const getImgURLs = (() => {
   type ImgURLs = {
     url: string
