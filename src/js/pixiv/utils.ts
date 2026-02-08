@@ -7,7 +7,7 @@ const getImgId = () => {
 
 const getInput = (inputName: string) => {
   const form = document.forms.namedItem("downloader-form")!
-  return form.elements.namedItem(inputName) as HTMLInputElement
+  return form.elements.namedItem(inputName) as HTMLInputElement | RadioNodeList
 }
 
 const getImgURLs = (() => {

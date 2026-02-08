@@ -13,6 +13,10 @@ form[name="downloader-form"] input[type="text"] {
   width: 100%;
 }
 
+form[name="downloader-form"] section > button {
+  width: 50%;
+}
+
 fieldset#imageList {
   height: 100%;
   box-sizing: border-box;
@@ -43,6 +47,10 @@ form[name="downloader-form"] section > label:first-of-type {
 
 form[name="downloader-form"] textarea {
   resize: none;
+}
+
+form[name="downloader-form"] section > button {
+  place-self: center;
 }
 
 fieldset#imageList {

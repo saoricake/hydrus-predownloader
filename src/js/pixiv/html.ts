@@ -1,3 +1,8 @@
+const ARTIST_ID_FIELD = "artist-id"
+const ILLUST_DATE_FIELD = "illust-date"
+const ARTIST_NAME_FIELD = "artist-name"
+const TAGS_TEXTAREA = "tags"
+
 const getDialog = (() => {
   const createDialogBase = () => {
     const dialog = document.createElement("dialog")
@@ -18,19 +23,19 @@ const getDialog = (() => {
 
     artistIdInput.type = "hidden"
     illustDateInput.type = "hidden"
-    artistIdInput.name = "artist-id"
-    illustDateInput.name = "illust-date"
+    artistIdInput.name = ARTIST_ID_FIELD
+    illustDateInput.name = ILLUST_DATE_FIELD
 
     return { artistIdInput, illustDateInput }
   }
 
   const createArtistNameField = (() => {
-    const getArtistId = () => getInput("artist-id").value
+    const getArtistId = () => getInput(ARTIST_ID_FIELD).value
 
     const createHandlers = (input: HTMLInputElement) => ({
       save: () => {
         if (!input.value) return
-        input.value = input.value.replaceAll(" ", "_")
+        input.value = input.value.replaceAll(" ", "_").trim()
         localStorage.setItem(getArtistId(), input.value)
       },
       load: () => {
@@ -60,7 +65,7 @@ const getDialog = (() => {
       const loadButton = createButton("load", load)
       const clearButton = createButton("clear", clear)
 
-      input.name = "artist-name"
+      input.name = ARTIST_NAME_FIELD
       input.placeholder = "artist's name"
       input.type = "text"
       input.required = true
@@ -76,7 +81,7 @@ const getDialog = (() => {
 
   const createTagTextarea = () => {
     const textarea = document.createElement("textarea")
-    textarea.name = "tags"
+    textarea.name = TAGS_TEXTAREA
     textarea.placeholder = "tags"
     textarea.wrap = "off"
     return textarea
@@ -89,6 +94,62 @@ const getDialog = (() => {
     return fieldset
   }
 
+  const createDownloadButton = (() => {
+    type Sidecar = {
+      date: string
+      artist: string
+      tags?: string[]
+    }
+
+    const downloadLink = document.createElement("a")
+    downloadLink.target = "_blank"
+
+    const getSelectedImages = () => {
+      const allImages = getInput("image") as RadioNodeList
+      return Array.from(allImages).filter(i => i.checked)
+    }
+
+    const createSidecar = () => {
+      const date = getInput(ILLUST_DATE_FIELD).value
+      const artist = getInput(ARTIST_NAME_FIELD).value.trim()
+      const tags = getInput(TAGS_TEXTAREA).value.trim()
+
+      const sidecar: Sidecar = { date, artist }
+      if (tags) { sidecar.tags = tags.split("\n").filter(t => t !== "") }
+
+      return sidecar
+    }
+
+    const handleDownload = async (ev: PointerEvent) => {
+      ev.preventDefault()
+
+      const images = getSelectedImages()
+      if (!images.length) return
+      
+      for (const img of images) {
+        const imgBlob = await fetch(img.value).then(r => r.blob())
+        downloadLink.href = URL.createObjectURL(imgBlob)
+        const splitHref = img.value.split("/")
+        downloadLink.download = splitHref[splitHref.length - 1]
+        downloadLink.click()
+      }
+
+      const sidecar = createSidecar()
+      const sidecarJSON = JSON.stringify(sidecar)
+      downloadLink.href = `data:json,${sidecarJSON}`
+      downloadLink.download = getImgId() + ".json"
+      downloadLink.click()
+    }
+
+    return () => {
+      /** @todo only enable the download button if at least one image was selected */
+      const button = document.createElement("button")
+      button.addEventListener("click", handleDownload)
+      button.appendChild(document.createTextNode("download"))
+      return button
+    }
+  })()
+
   const createDialog = () => {
     const { dialog, form } = createDialogBase()
     const { artistIdInput, illustDateInput } = createHiddenInputs()
@@ -100,6 +161,7 @@ const getDialog = (() => {
     form.appendChild(illustDateInput)
     section.appendChild(createArtistNameField())
     section.appendChild(createTagTextarea())
+    section.appendChild(createDownloadButton())
 
     document.body.appendChild(dialog)
     return dialog
@@ -131,8 +193,8 @@ const updateHiddenInputs = (() => {
   const getHiddenInputs = (): HiddenInputs => {
     const form = document.forms.namedItem("downloader-form")!
     return {
-      artistIdInput: form.elements.namedItem("artist-id") as HTMLInputElement,
-      illustDateInput: form.elements.namedItem("illust-date") as HTMLInputElement
+      artistIdInput: form.elements.namedItem(ARTIST_ID_FIELD) as HTMLInputElement,
+      illustDateInput: form.elements.namedItem(ILLUST_DATE_FIELD) as HTMLInputElement
     }
   }
 
@@ -146,9 +208,9 @@ const updateHiddenInputs = (() => {
 })()
 
 const initArtistNameField = () => {
-  const saved = localStorage.getItem(getInput("artist-id").value)
+  const saved = localStorage.getItem(getInput(ARTIST_ID_FIELD).value)
   if (!saved) return
-  getInput("artist-name").value = saved
+  getInput(ARTIST_NAME_FIELD).value = saved
 }
 
 const updateImageList = (() => {
