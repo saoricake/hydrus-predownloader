@@ -41,6 +41,10 @@ form[name="downloader-form"] section > label:first-of-type {
   input[type="text"] { grid-column: 1 / -1; }
 }
 
+form[name="downloader-form"] textarea {
+  resize: none;
+}
+
 fieldset#imageList {
   display: grid;
   grid-template-columns: repeat(3, max-content);

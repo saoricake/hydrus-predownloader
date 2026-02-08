@@ -12,6 +12,18 @@ const getDialog = (() => {
     return { dialog, form }
   }
 
+  const createHiddenInputs = () => {
+    const artistIdInput = document.createElement("input")
+    const illustDateInput = document.createElement("input")
+
+    artistIdInput.type = "hidden"
+    illustDateInput.type = "hidden"
+    artistIdInput.name = "artist-id"
+    illustDateInput.name = "illust-date"
+
+    return { artistIdInput, illustDateInput }
+  }
+
   const createArtistNameField = (() => {
     const getArtistId = () => getInput("artist-id").value
 
@@ -62,16 +74,12 @@ const getDialog = (() => {
     }
   })()
 
-  const createHiddenInputs = () => {
-    const artistIdInput = document.createElement("input")
-    const illustDateInput = document.createElement("input")
-
-    artistIdInput.type = "hidden"
-    illustDateInput.type = "hidden"
-    artistIdInput.name = "artist-id"
-    illustDateInput.name = "illust-date"
-
-    return { artistIdInput, illustDateInput }
+  const createTagTextarea = () => {
+    const textarea = document.createElement("textarea")
+    textarea.name = "tags"
+    textarea.placeholder = "tags"
+    textarea.wrap = "off"
+    return textarea
   }
 
   const createImageList = () => {
@@ -91,6 +99,7 @@ const getDialog = (() => {
     form.appendChild(artistIdInput)
     form.appendChild(illustDateInput)
     section.appendChild(createArtistNameField())
+    section.appendChild(createTagTextarea())
 
     document.body.appendChild(dialog)
     return dialog
