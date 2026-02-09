@@ -1,0 +1,4 @@
+const ARTIST_ID_FIELD = "artist-id"
+const ILLUST_DATE_FIELD = "illust-date"
+const ARTIST_NAME_FIELD = "artist-name"
+const TAGS_TEXTAREA = "tags"

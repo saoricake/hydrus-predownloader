@@ -13,7 +13,7 @@ form[name="downloader-form"] input[type="text"] {
   width: 100%;
 }
 
-form[name="downloader-form"] section > button {
+form[name="downloader-form"] button[type="submit"] {
   width: 50%;
 }
 
@@ -49,7 +49,7 @@ form[name="downloader-form"] textarea {
   resize: none;
 }
 
-form[name="downloader-form"] section > button {
+form[name="downloader-form"] button[type="submit"] {
   place-self: center;
 }
 

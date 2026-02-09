@@ -1,8 +1,3 @@
-const ARTIST_ID_FIELD = "artist-id"
-const ILLUST_DATE_FIELD = "illust-date"
-const ARTIST_NAME_FIELD = "artist-name"
-const TAGS_TEXTAREA = "tags"
-
 const getDialog = (() => {
   const createDialogBase = () => {
     const dialog = document.createElement("dialog")
@@ -15,6 +10,17 @@ const getDialog = (() => {
     dialog.appendChild(form)
 
     return { dialog, form }
+  }
+
+  const createButton = (
+    label: string,
+    onClick?: NonNullable<HTMLButtonElement["onclick"]>
+  ) => {
+    const button = document.createElement("button")
+    button.appendChild(document.createTextNode(label))
+    button.type = "button"
+    if (onClick) button.addEventListener("click", onClick)
+    return button
   }
 
   const createHiddenInputs = () => {
@@ -45,17 +51,6 @@ const getDialog = (() => {
       },
       clear: () => localStorage.removeItem(getArtistId())
     })
-
-    const createButton = (
-      label: string,
-      onClick: NonNullable<HTMLButtonElement["onclick"]>
-    ) => {
-      const button = document.createElement("button")
-      button.appendChild(document.createTextNode(label))
-      button.type = "button"
-      button.addEventListener("click", onClick)
-      return button
-    }
 
     return () => {
       const label = document.createElement("label")
@@ -94,61 +89,12 @@ const getDialog = (() => {
     return fieldset
   }
 
-  const createDownloadButton = (() => {
-    type Sidecar = {
-      date: string
-      artist: string
-      tags?: string[]
-    }
-
-    const downloadLink = document.createElement("a")
-    downloadLink.target = "_blank"
-
-    const getSelectedImages = () => {
-      const allImages = getInput("image") as RadioNodeList
-      return Array.from(allImages).filter(i => i.checked)
-    }
-
-    const createSidecar = () => {
-      const date = getInput(ILLUST_DATE_FIELD).value
-      const artist = getInput(ARTIST_NAME_FIELD).value.trim()
-      const tags = getInput(TAGS_TEXTAREA).value.trim()
-
-      const sidecar: Sidecar = { date, artist }
-      if (tags) { sidecar.tags = tags.split("\n").filter(t => t !== "") }
-
-      return sidecar
-    }
-
-    const handleDownload = async (ev: PointerEvent) => {
-      ev.preventDefault()
-
-      const images = getSelectedImages()
-      if (!images.length) return
-      
-      for (const img of images) {
-        const imgBlob = await fetch(img.value).then(r => r.blob())
-        downloadLink.href = URL.createObjectURL(imgBlob)
-        const splitHref = img.value.split("/")
-        downloadLink.download = splitHref[splitHref.length - 1]
-        downloadLink.click()
-      }
-
-      const sidecar = createSidecar()
-      const sidecarJSON = JSON.stringify(sidecar)
-      downloadLink.href = `data:json,${sidecarJSON}`
-      downloadLink.download = getImgId() + ".json"
-      downloadLink.click()
-    }
-
-    return () => {
-      /** @todo only enable the download button if at least one image was selected */
-      const button = document.createElement("button")
-      button.addEventListener("click", handleDownload)
-      button.appendChild(document.createTextNode("download"))
-      return button
-    }
-  })()
+  const createSubmitButton = () => {
+    const submit = document.createElement("button")
+    submit.appendChild(document.createTextNode("download"))
+    submit.type = "submit"
+    return submit
+  }
 
   const createDialog = () => {
     const { dialog, form } = createDialogBase()
@@ -161,7 +107,9 @@ const getDialog = (() => {
     form.appendChild(illustDateInput)
     section.appendChild(createArtistNameField())
     section.appendChild(createTagTextarea())
-    section.appendChild(createDownloadButton())
+    section.appendChild(createSubmitButton())
+
+    form.addEventListener("submit", handleDownload)
 
     document.body.appendChild(dialog)
     return dialog
