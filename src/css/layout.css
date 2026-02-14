@@ -3,7 +3,7 @@ dialog#downloader {
   height: 80%;
 }
 
-dialog#downloader form {
+form[name="downloader-form"] {
   height: 100%;
 }
 
@@ -17,14 +17,14 @@ form[name="downloader-form"] button[type="submit"] {
   width: 50%;
 }
 
-fieldset#imageList {
+fieldset[name="images"] {
   height: 100%;
   box-sizing: border-box;
   overflow-y: scroll;
 }
 
 /* grid */
-dialog#downloader form {
+form[name="downloader-form"] {
   display: grid;
   grid-template-rows: max-content 1fr max-content;
   grid-template-columns: repeat(2, 1fr);
@@ -53,14 +53,14 @@ form[name="downloader-form"] button[type="submit"] {
   place-self: center;
 }
 
-fieldset#imageList {
+fieldset[name="images"] {
   display: grid;
   grid-template-columns: repeat(3, max-content);
   gap: 4px;
   grid-auto-rows: max-content;
 }
 
-fieldset#imageList label {
+fieldset[name="images"] label {
   display: grid;
   place-items: start;
 

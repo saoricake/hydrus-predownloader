@@ -84,7 +84,6 @@ const getDialog = (() => {
 
   const createImageList = () => {
     const fieldset = document.createElement("fieldset")
-    fieldset.id = "imageList"
     fieldset.name = "images"
     return fieldset
   }
