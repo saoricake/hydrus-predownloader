@@ -13,16 +13,20 @@
   "content_scripts": [
     {
       "matches": ["*://www.pixiv.net/*"],
-      "css": ["css/layout.css", "css/style.css"]
+      "css": ["css/layout.css", "css/style.css"],
+      "js": ["js/consts.js", "js/utils.js"]
+    },
+    {
+      "matches": ["*://www.pixiv.net/*"],
+      "js": ["js/data/pixiv.js"]
     },
     {
       "matches": ["*://www.pixiv.net/*"],
       "js": [
-        "js/pixiv/consts.js",
-        "js/pixiv/utils.js",
-        "js/pixiv/download.js",
-        "js/pixiv/html.js",
-        "js/init.js"
+        "js/download.js",
+        "js/html.js",
+        "js/init.js",
+        "js/run.js"
       ]
     }
   ]

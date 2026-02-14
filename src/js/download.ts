@@ -9,7 +9,9 @@ const handleDownload = (() => {
   link.target = "_blank"
 
   const getSelectedImages = () =>
-    Array.from(getInput("image") as RadioNodeList).filter(i => i.checked).map(i => i.value)
+    Array.from(getInput<RadioNodeList>(IMAGE_CHECKBOX))
+      .filter(i => i.checked)
+      .map(i => i.value)
 
   const createSidecar = () => {
     const date = getInput(ILLUST_DATE_FIELD).value

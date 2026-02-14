@@ -1,3 +1,8 @@
+type IllustResponseBody = {
+  createDate: string
+  userId: string
+}
+
 const isIllustPage = () => /\/artworks\/\d+$/.test(location.pathname)
 
 const getImgId = () => {
@@ -5,10 +10,13 @@ const getImgId = () => {
   return match[match.length - 1]
 }
 
-const getInput = (inputName: string) => {
-  const form = document.forms.namedItem("downloader-form")!
-  return form.elements.namedItem(inputName) as HTMLInputElement | RadioNodeList
-}
+const getDateAndUserId = () =>
+  fetch(`${location.origin}/ajax/illust/${getImgId()}`)
+    .then<{ body: IllustResponseBody }>(r => r.json())
+    .then(
+      ({ body: { createDate, userId } }) =>
+        ({ artistId: userId, illustDate: createDate })
+    )
 
 const getImgURLs = (() => {
   type ImgURLs = {

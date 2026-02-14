@@ -84,7 +84,7 @@ const getDialog = (() => {
 
   const createImageList = () => {
     const fieldset = document.createElement("fieldset")
-    fieldset.name = "images"
+    fieldset.name = IMAGES_FIELDSET
     return fieldset
   }
 
@@ -120,60 +120,20 @@ const getDialog = (() => {
   )
 })()
 
-const updateHiddenInputs = (() => {
-  type IllustResponseBody = {
-    createDate: string
-    uploadDate: string
-    userId: string
-  }
-
-  type HiddenInputs = {
-    artistIdInput: HTMLInputElement
-    illustDateInput: HTMLInputElement
-  }
-
-  const getDateAndUserId = () =>
-    fetch(`${location.origin}/ajax/illust/${getImgId()}`)
-      .then<{ body: IllustResponseBody }>(r => r.json())
-      .then(j => j.body)
-
-  const getHiddenInputs = (): HiddenInputs => {
-    const form = document.forms.namedItem("downloader-form")!
-    return {
-      artistIdInput: form.elements.namedItem(ARTIST_ID_FIELD) as HTMLInputElement,
-      illustDateInput: form.elements.namedItem(ILLUST_DATE_FIELD) as HTMLInputElement
-    }
-  }
-
-  return async () => {
-    const { createDate, userId } = await getDateAndUserId()
-    const { artistIdInput, illustDateInput } = getHiddenInputs()
-
-    artistIdInput.value = userId
-    illustDateInput.value = createDate.split("T")[0]
-  }
-})()
-
-const initArtistNameField = () => {
-  const saved = localStorage.getItem(getInput(ARTIST_ID_FIELD).value)
-  if (!saved) return
-  getInput(ARTIST_NAME_FIELD).value = saved
+type ImgURLs = {
+  url: string
+  thumb: string
 }
 
-const updateImageList = (() => {
-  type ImgURLs = {
-    url: string
-    thumb: string
-  }
-
+const createImgListItem = (() => {
   const IMG_SIZE = 128
 
-  const createImgListItem = ({ url, thumb }: ImgURLs) => {
+  return ({ url, thumb }: ImgURLs) => {
     const label = document.createElement("label")
     const input = document.createElement("input")
     const img = document.createElement("img")
 
-    input.name = "image"
+    input.name = IMAGE_CHECKBOX
     input.type = "checkbox"
     input.value = url
     img.height = IMG_SIZE
@@ -184,16 +144,5 @@ const updateImageList = (() => {
     label.appendChild(img)
 
     return label
-  }
-
-  return (imgURLsArray: ImgURLs[]) => {
-    const listItems = []
-
-    for (const iu of imgURLsArray) {
-      listItems.push(createImgListItem(iu))
-    }
-
-    const imgList = document.getElementById("imageList")!
-    imgList.replaceChildren(...listItems)
   }
 })()

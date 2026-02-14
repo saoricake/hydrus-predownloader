@@ -1,21 +1,41 @@
-let latest = ""
-
-document.addEventListener("keydown", async (ev) => {
-  if (!isIllustPage()) return
-  if (!ev.ctrlKey) return
-  if (ev.key !== "q") return
-  if (ev.repeat) return
-
-  const dialog = getDialog()
-  if (dialog.open) return
-
-  if (latest !== location.pathname) {
-    await updateHiddenInputs()
-    initArtistNameField()
-    const imgURLs = await getImgURLs()
-    updateImageList(imgURLs)
-    latest = location.pathname
+const initHiddenInputs = (() => {
+  type HiddenInputs = {
+    artistIdInput: HTMLInputElement
+    illustDateInput: HTMLInputElement
   }
 
-  dialog.showModal()
-})
+  const getHiddenInputs = (): HiddenInputs => {
+    const form = document.forms.namedItem("downloader-form")!
+    return {
+      artistIdInput: form.elements.namedItem(ARTIST_ID_FIELD) as HTMLInputElement,
+      illustDateInput: form.elements.namedItem(ILLUST_DATE_FIELD) as HTMLInputElement
+    }
+  }
+
+  return async () => {
+    const { artistId, illustDate } = await getDateAndUserId()
+    const { artistIdInput, illustDateInput } = getHiddenInputs()
+
+    artistIdInput.value = artistId
+    illustDateInput.value = illustDate.split("T")[0]
+  }
+})()
+
+const initArtistNameField = () => {
+  const saved = localStorage.getItem(getInput(ARTIST_ID_FIELD).value)
+  if (!saved) return
+  getInput(ARTIST_NAME_FIELD).value = saved
+}
+
+const initImageList = (() => {
+  return (imgURLsArray: ImgURLs[]) => {
+    const listItems = []
+
+    for (const iu of imgURLsArray) {
+      listItems.push(createImgListItem(iu))
+    }
+
+    const imgList = getInput<HTMLFieldSetElement>(IMAGES_FIELDSET)
+    imgList.replaceChildren(...listItems)
+  }
+})()
