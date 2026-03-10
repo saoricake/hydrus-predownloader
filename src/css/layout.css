@@ -13,7 +13,15 @@ form[name="downloader-form"] input[type="text"] {
   width: 100%;
 }
 
-form[name="downloader-form"] button[type="submit"] {
+form[name="downloader-form"] section div label {
+  width: max-content;
+}
+
+form[name="downloader-form"] section input[type="checkbox"] {
+  margin: revert;
+}
+
+form[name="downloader-form"] section button[type="submit"] {
   width: 50%;
 }
 
@@ -43,6 +51,12 @@ form[name="downloader-form"] section > label:first-of-type {
   gap: 4px;
 
   input[type="text"] { grid-column: 1 / -1; }
+}
+
+form[name="downloader-form"] section div {
+  display: grid;
+  grid-template-rows: 1fr max-content;
+  gap: 4px;
 }
 
 form[name="downloader-form"] textarea {

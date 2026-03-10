@@ -8,7 +8,11 @@ form[name="downloader-form"] button {
   border: revert;
 }
 
-fieldset#imageList {
+form[name="downloader-form"] section input[type="checkbox"] {
+  vertical-align: text-top;
+}
+
+fieldset[name="images"] {
   padding: 4px;
   border: 1px solid #8F8F9D;
   margin: 0;

@@ -74,12 +74,31 @@ const getDialog = (() => {
     }
   })()
 
+  const createPageTagsCheckbox = () => {
+    const label = document.createElement("label")
+    const input = document.createElement("input")
+
+    input.name = PAGE_TAGS_CHECKBOX
+    input.type = "checkbox"
+
+    label.appendChild(input)
+    label.appendChild(document.createTextNode("add page tags"))
+
+    return label
+  }
+
   const createTagTextarea = () => {
+    const wrapper = document.createElement("div")
     const textarea = document.createElement("textarea")
+
     textarea.name = TAGS_TEXTAREA
     textarea.placeholder = "tags"
     textarea.wrap = "off"
-    return textarea
+
+    wrapper.appendChild(textarea)
+    wrapper.appendChild(createPageTagsCheckbox())
+
+    return wrapper
   }
 
   const createImageList = () => {
