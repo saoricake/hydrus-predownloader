@@ -1,5 +1,5 @@
 type Sidecar = {
-  date: string
+  date: number
   artist: string
   tags?: string[]
 }
@@ -19,7 +19,10 @@ const handleDownload = (() => {
     const tags = getInput(TAGS_TEXTAREA).value.trim()
     const pageTags = getInput(PAGE_TAGS_CHECKBOX).checked
 
-    const sidecar: Sidecar = { date, artist }
+    const sidecar: Sidecar = {
+      date: Temporal.Instant.from(date).epochMilliseconds / 1000,
+      artist
+    }
     if (tags) {
       sidecar.tags = tags.split("\n")
         .filter(t => t !== "")
