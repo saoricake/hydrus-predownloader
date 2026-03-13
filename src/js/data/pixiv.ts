@@ -10,6 +10,9 @@ const getImgId = () => {
   return match[match.length - 1]
 }
 
+const getImgSource = () =>
+  location.toString().replace("/en/", "/")
+
 const getDateAndUserId = () =>
   fetch(`${location.origin}/ajax/illust/${getImgId()}`)
     .then<{ body: IllustResponseBody }>(r => r.json())

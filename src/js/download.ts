@@ -1,6 +1,7 @@
 type Sidecar = {
   date: number
   artist: string
+  url: string
   tags?: string[]
 }
 
@@ -17,18 +18,19 @@ const handleDownload = (() => {
     const date = getInput(ILLUST_DATE_FIELD).value
     const artist = getInput(ARTIST_NAME_FIELD).value
     const tags = getInput(TAGS_TEXTAREA).value.trim()
-    const pageTags = getInput(PAGE_TAGS_CHECKBOX).checked
+    const addPageTags = getInput(PAGE_TAGS_CHECKBOX).checked
 
     const sidecar: Sidecar = {
       date: Temporal.Instant.from(date).epochMilliseconds / 1000,
-      artist
+      artist,
+      url: getImgSource()
     }
     if (tags) {
       sidecar.tags = tags.split("\n")
         .filter(t => t !== "")
         .map(t => t.trim())
     }
-    if (pageTags) {
+    if (addPageTags) {
       sidecar.tags ??= []
       sidecar.tags.push(`page:${pageNum}`)
     }
