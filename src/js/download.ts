@@ -1,37 +1,48 @@
 type Sidecar = {
   date: number
-  artist: string
   url: string
-  tags?: string[]
+  tags: string[]
 }
 
 const handleDownload = (() => {
   const link = document.createElement("a")
   link.target = "_blank"
 
-  const getSelectedImages = () =>
-    Array.from(getInput<RadioNodeList>(IMAGE_CHECKBOX))
-      .filter(i => i.checked)
-      .map(i => i.value)
+  const cleanTags = (inputValue: string) =>
+    inputValue.split("\n").map(t => t.trim()).filter(t => t !== "")
+
+  const getSelectedImages = () => {
+    const inputs = getInput<RadioNodeList | HTMLInputElement>(IMAGE_CHECKBOX)
+
+    if ((inputs as RadioNodeList).length) {
+      return Array.from(getInput<RadioNodeList>(IMAGE_CHECKBOX))
+        .filter(i => i.checked)
+        .map(i => i.value)
+    } else {
+      return (inputs as HTMLInputElement).checked ? [inputs.value] : []
+    }
+  }
 
   const createSidecar = (pageNum: number) => {
     const date = getInput(ILLUST_DATE_FIELD).value
     const artist = getInput(ARTIST_NAME_FIELD).value
+    const seriesTags = getInput(SERIES_TAGS_TEXTAREA).value
+    const charTags = getInput(CHARACTER_TAGS_TEXTAREA).value
     const tags = getInput(TAGS_TEXTAREA).value.trim()
     const addPageTags = getInput(PAGE_TAGS_CHECKBOX).checked
 
     const sidecar: Sidecar = {
       date: Temporal.Instant.from(date).epochMilliseconds / 1000,
-      artist,
+      tags: [
+        `creator:${artist}`,
+        ...cleanTags(seriesTags).map(s => `series:${s}`),
+        ...cleanTags(charTags).map(c => `character:${c}`),
+        ...cleanTags(tags)
+      ],
       url: getImgSource()
     }
-    if (tags) {
-      sidecar.tags = tags.split("\n")
-        .map(t => t.trim())
-        .filter(t => t !== "")
-    }
+
     if (addPageTags) {
-      sidecar.tags ??= []
       sidecar.tags.push(`page:${pageNum}`)
     }
 

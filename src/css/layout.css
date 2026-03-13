@@ -55,8 +55,14 @@ form[name="downloader-form"] section > label:first-of-type {
 
 form[name="downloader-form"] section div {
   display: grid;
-  grid-template-rows: 1fr max-content;
+  grid-template-rows: 2fr 4fr max-content;
+  grid-template-columns: 1fr 1fr;
   gap: 4px;
+
+  textarea[name="tags"],
+  & > label {
+    grid-column: 1 / span 2;
+  }
 }
 
 form[name="downloader-form"] textarea {

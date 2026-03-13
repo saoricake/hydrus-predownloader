@@ -74,32 +74,40 @@ const getDialog = (() => {
     }
   })()
 
-  const createPageTagsCheckbox = () => {
-    const label = document.createElement("label")
-    const input = document.createElement("input")
+  const createTagsTextareas = (() => {
+    const textarea = (name:string, placeholder: string) =>
+      element("textarea", { name, placeholder, wrap: "off" })
 
-    input.name = PAGE_TAGS_CHECKBOX
-    input.type = "checkbox"
+    const createSeriesTagsTextarea = () =>
+      textarea(SERIES_TAGS_TEXTAREA, "series")
 
-    label.appendChild(input)
-    label.appendChild(document.createTextNode("add page tags"))
+    const createCharacterTagsTextarea = () =>
+      textarea(CHARACTER_TAGS_TEXTAREA, "characters")
 
-    return label
-  }
+    const createGeneralTagsTextarea = () =>
+      textarea(TAGS_TEXTAREA, "tags")
 
-  const createTagTextarea = () => {
-    const wrapper = document.createElement("div")
-    const textarea = document.createElement("textarea")
+    const createPageTagsCheckbox = () => {
+      const label = document.createElement("label")
+      const input = element("input", { name: PAGE_TAGS_CHECKBOX, type: "checkbox" })
 
-    textarea.name = TAGS_TEXTAREA
-    textarea.placeholder = "tags"
-    textarea.wrap = "off"
+      label.appendChild(input)
+      label.appendChild(document.createTextNode("add page tags"))
 
-    wrapper.appendChild(textarea)
-    wrapper.appendChild(createPageTagsCheckbox())
+      return label
+    }
 
-    return wrapper
-  }
+    return () => {
+      const wrapper = document.createElement("div")
+
+      wrapper.appendChild(createSeriesTagsTextarea())
+      wrapper.appendChild(createCharacterTagsTextarea())
+      wrapper.appendChild(createGeneralTagsTextarea())
+      wrapper.appendChild(createPageTagsCheckbox())
+
+      return wrapper
+    }
+  })()
 
   const createImageList = () => {
     const fieldset = document.createElement("fieldset")
@@ -124,7 +132,7 @@ const getDialog = (() => {
     form.appendChild(artistIdInput)
     form.appendChild(illustDateInput)
     section.appendChild(createArtistNameField())
-    section.appendChild(createTagTextarea())
+    section.appendChild(createTagsTextareas())
     section.appendChild(createSubmitButton())
 
     form.addEventListener("submit", handleDownload)

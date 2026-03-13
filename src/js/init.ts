@@ -17,7 +17,7 @@ const initHiddenInputs = (() => {
     const { artistIdInput, illustDateInput } = getHiddenInputs()
 
     artistIdInput.value = artistId
-    illustDateInput.value = illustDate.split("T")[0]
+    illustDateInput.value = illustDate
   }
 })()
 
