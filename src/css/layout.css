@@ -69,7 +69,7 @@ form[name="downloader-form"] button[type="submit"] {
 
 fieldset[name="images"] {
   display: grid;
-  grid-template-columns: repeat(3, max-content);
+  grid-template-columns: repeat(3, 1fr);
   gap: 4px;
   grid-auto-rows: max-content;
 }
