@@ -27,8 +27,8 @@ const handleDownload = (() => {
     }
     if (tags) {
       sidecar.tags = tags.split("\n")
-        .filter(t => t !== "")
         .map(t => t.trim())
+        .filter(t => t !== "")
     }
     if (addPageTags) {
       sidecar.tags ??= []
