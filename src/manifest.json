@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "Hydrus Downloader",
+  "name": "Hydrus Predownloader",
   "version": "1.0",
-  "description": "Downloads images from certain websites.",
+  "description": "Enables downloading images from select websites while also creating a JSON sidecar with their tags/metadata.",
 
   "permissions": [],
   "host_permissions": ["*://www.pixiv.net/*"],
   "browser_specific_settings": {
-    "gecko": { "id": "HydrusDownloader@nothinghappens.neocities.org" }
+    "gecko": { "id": "HydrusPredownloader@nothinghappens.neocities.org" }
   },
 
   "content_scripts": [
