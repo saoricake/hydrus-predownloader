@@ -12,14 +12,15 @@ so i made this extension to solve that issue. it lets you open a dialog on relev
 4. go to [about:addons](about:addons), and drag the zip you downloaded from the previous step into this page. firefox will ask you if you want to install the extension, so accept.
 5. that's it
 
+## supported sites
+
+currently, only [pixiv](https://www.pixiv.net/) galleries (`https://www.pixiv.net/artworks/{id}`) are supported, but i plan on adding a few more.
+
 ## usage
 
-<figure style="max-width: 800px; margin: 0 auto 2rem;">
-<img src="https://nothinghappens.neocities.org/stuff/hydrus-predownloader-ui.webp"/>
-<figcaption style="margin: 0 auto; width: max-content;">pictured: the downloader dialog, circa v1.0.0, open on <a href="https://www.pixiv.net/artworks/128454842">this pixiv gallery</a></figcaption>
-</figure>
+once the extension is installed, you can press `Ctrl + Q` on a supported page to open the downloader dialog:
 
-once the extension is installed, you can press `Ctrl + Q` on a supported page to open the downloader dialog, shown on the picture above with key areas highlighted. they are:
+![](https://nothinghappens.neocities.org/stuff/hydrus-predownloader-ui.webp)
 
 1. a text field for the artist's name. (i don't just grab it automatically from the page because i want it to be romanized, and sometimes the artist doesn't even use their primary pen name as their pixiv username anyway.) this field is required, and its contents will be added to the `tags` array in the JSON file, with `creator:` prepended to it.
 2. multi-line text areas for adding series, character, and generic tags. all are optional. each line on each text area will be considered as a separate tag, with the series and character ones having `series:` and `character:` prepended to them, respectively.
