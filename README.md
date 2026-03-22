@@ -28,14 +28,34 @@ once the extension is installed, you can press `Ctrl + Q` on a supported page to
 3. a grid showing all the images in the gallery. at least one must be selected, and only the selected ones will be downloaded.
 4. the download button. after inputting the artist's name and selecting at least one image, click this, and the images and their respective JSON files will be downloaded! (note that it might take a little bit for the downloads to start, so don't click the download button again before they do.) (there's currently no progress indicator, though i'd like to add one someday.) (...also, all the files are downloaded separately. i would've liked to put all of them in a single zip file, but couldn't figure out how to do it without requiring an external library.)
 
-## supported sites
+---
 
-currently, only [pixiv](https://www.pixiv.net/) is supported, but i plan on adding a few more.
+<details>
+<summary>dev stuff</summary>
 
 ## project structure
 
-TBA
+| folder/file | contents |
+| --- | --- |
+| `/dist` | after running `yarn build`, everything in `/src` will be moved to here, maintaining the same folder structure, and with `.ts` files being converted to `.js` |
+| `/src` | root folder of the extension source code |
+| `/src/css/layout.css` | css file that defines the layout of the dialog (primarily css grid-related rules, but also some box model stuff) |
+| `/src/css/style.css` | css file that defines the look of the dialog |
+| `/src/js/data/*.ts` | files that define site-specific functions that get the data using during the download (for example, the URLs of the images, their metadata, etc.) |
+| `/src/js/consts.ts` | defines constants used in various other files |
+| `/src/js/download.ts` | defines the functions that actually execute the downloads |
+| `/src/js/html.ts` | defines the functions that create the dialog's html |
+| `/src/js/init.ts` | defines the functions that initialize the dialog when it opens on a given page for the first time |
+| `/src/js/run.ts` | defines the function that opens the dialog |
+| `/src/js/utils.ts` | defines some utility functions used in various other files |
+| `/src/manifest.json` | [what it says on the tin](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json) |
 
 ## building it yourself
 
 TBA
+
+## adding support to other sites
+
+TBA
+
+</details>
