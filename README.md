@@ -9,7 +9,7 @@ so i made this extension to solve that issue. it lets you open a dialog on relev
 1. you have to be using [firefox developer edition](https://www.firefox.com/en-US/channel/desktop/developer/). you also need to have the [CORS everywhere](https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/) extension installed, with `/^https://www.pixiv.net/` added to its activation whitelist (available on the extension options).
 2. go to [about:config](about:config). there, search for `xpinstall.signatures.required`, and set it to `false`.
 3. head over to the [releases](https://github.com/saoricake/hydrus-predownloader/releases) page, and download the zip of whatever the latest release is (not the source code one).
-4. go to [about:addons](about:addons), and drag the zip you downloaded from the previous step into this page. firefox will ask you if you want to install the extension, so accept.
+4. go to about:addons, and drag the zip you downloaded from the previous step into this page. firefox will ask you if you want to install the extension, so accept.
 5. that's it
 
 ## supported sites
@@ -52,10 +52,27 @@ once the extension is installed, you can press `Ctrl + Q` on a supported page to
 
 ## building it yourself
 
-TBA
+0. install [git](https://git-scm.com/install/) (if you somehow don't have it yet) and [yarn](https://yarnpkg.com/getting-started/install) (4.6.0)
+1. open the command line on the folder you want the project folder to be in, then run `git clone https://github.com/saoricake/hydrus-predownloader.git`
+2. inside the `/hydrus-predownloader` folder that appeared, run `yarn install`...
+3. ...and then `yarn build`
+4. zip all the files inside the `/dist` folder (the files, not the folder itself!) with your preferred zipping program (i use 7zip). ta-da
+5. if you ever change something in the code, run `yarn build` again to make the new code appear on `/dist`. then, you can test it through a temporary install by going to about:debugging → "This Firefox" → "Load Temporary Add-on..." and selecting `/dist/manifest.json`, or zip the contents of `/dist` again to install it permanently.
 
-## adding support to other sites
+## adding support for other sites
 
-TBA
+create a new typescript file inside `/src/js/data`, named after the site you're adding support for or whatever. it should define the following functions:
+
+| function's name | return type | details |
+| --- | --- | --- |
+| `isIllustPage` | `boolean` | makes some sort of additional check to see if the dialog should open. (hmm, maybe i should've given it a more generic name.) if the site's not a single-page app, then you can probably just have it return `true`. |
+| `getImgSource` | `string` | the string returned by this one will be recorded as the image's "source" in hydrus. in most cases, it'll probably be the url of the current page. |
+| `getDateAndUserId` | `{ artistId: string; illustDate: string }` | the artist's id is used when saving their name on the dialog, so it should be something unique. the date will be recorded on hydrus, and needs to be something that can be fed into [`Temporal.Instant.from()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Temporal/Instant/from). |
+| `getImgURLs` | `Promise<{ url: string; thumb: string }[]>` | the `url` field is the address the full image will be downloaded from, while `thumb` will be used as the image's thumbnail in the dialog's grid. |
+
+once that's all done, open the `/src/manifest.json`, and...
+
+1. add the site to [the `matches` array](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json/content_scripts#matching_url_patterns) in the first and last objects of the `content_scripts` array. if the site is a single-page app, you should add just the domain, so the match is as broad as possible; otherwise, add the specific page.
+2. add a new object to the `content_scripts` array, between the last and second-to-last ones. give it a `matches` field with an array with the same match pattern used in the previous step, and a `js` field, also with an array, containing the path to the file with the functions you created earlier (`/src/js/data/{etc}.js`). important: you made a `.ts` file, but it should have a `.js` extension here!
 
 </details>
